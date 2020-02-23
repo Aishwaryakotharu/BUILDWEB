@@ -30,6 +30,7 @@ app.set("views", path.join(__dirname, "./views"));
  * request body
  */
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // app.use((req, res, next) => {
 //   // res.send("Response from Middleware");
@@ -40,7 +41,7 @@ app.use(bodyParser.json());
 app.get("/", (req, res) => {
   res.render("home", {
     layout: "hero",
-    pageTitle: "Home",
+    pageTitle: "Home"
   });
 });
 
@@ -52,9 +53,17 @@ app.get("/web/students", (req, res) => {
   });
 });
 
+app.get("/web/add-student.", (req, res) => {
+  res.render("addStudent", {
+    layout: "navigation",
+    pageTitle: "Add New Student",
+    studentID: students.length + 1
+  });
+});
+
 app.use("/students", studentsRouter);
 
-app.use("/student", studentRouter)
+app.use("/student", studentRouter);
 
 const server = app.listen(8080, () => {
   console.log(`Server running in port ${server.address().port}`);
