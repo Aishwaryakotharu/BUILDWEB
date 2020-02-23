@@ -6,6 +6,7 @@ const studentsRouter = require("./routers/studentsRouter");
 const studentRouter = require("./routers/studentRouter");
 const students = require("./models/Students");
 const formatIndex = require("./views/helpers/formatIndex");
+const ifEquality = require("./views/helpers/ifEquality");
 
 const app = express();
 
@@ -17,7 +18,8 @@ const hbs = expressHbs.create({
   layoutsDir: path.join(__dirname, "./views/layouts"),
   partialsDir: path.join(__dirname, "./views/partials"),
   helpers: {
-    formatIndex
+    formatIndex,
+    ifEquality
   }
 });
 app.engine(".hbs", hbs.engine);
@@ -53,12 +55,31 @@ app.get("/web/students", (req, res) => {
   });
 });
 
-app.get("/web/add-student.", (req, res) => {
+app.get("/web/add-student", (req, res) => {
   res.render("addStudent", {
     layout: "navigation",
     pageTitle: "Add New Student",
     studentID: students.length + 1
   });
+});
+
+app.get("/web/edit-student/:id", (req, res) => {
+  const { id = "" } = req.params;
+  const requiredStudent = students.find(student => {
+    if (parseInt(id) === student.id) return true;
+    else return false;
+  });
+  if (requiredStudent) {
+    res.render("addStudent", {
+      layout: "navigation",
+      pageTitle: "Add New Student",
+      studentID: requiredStudent.id,
+      mode: "edit",
+      student: requiredStudent
+    });
+  } else {
+    res.status(404).send("Not Found");
+  }
 });
 
 app.use("/students", studentsRouter);

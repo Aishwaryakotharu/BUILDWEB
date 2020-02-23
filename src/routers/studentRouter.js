@@ -5,13 +5,10 @@ const studentRouter = express.Router();
 
 studentRouter
   .post("/", (req, res) => {
-console.log(req.body);
     if (req.body.id && req.body.firstName) {
       students.push(req.body);
-      
       res.status(200).json({ message: "Student created successfully" });
-    } else 
-    {
+    } else {
       res.status(400).send("Bad Request");
     }
   })
