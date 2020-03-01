@@ -43,7 +43,7 @@ const teacherData = [
   {
     firstName: "aish",
     lastName: "kotharu",
-    email: "test@gmail.com",
+    email: "test23@gmail.com",
     subject: "english"
   },
   {
